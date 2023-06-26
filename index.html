@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)http://nfbgu1.ru/webgl/webgl.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>three.js webgl - геометрические фигуры</title>
+		
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=qoax9pn-P7tAeVGQ0zpkgkqh020ZC3VA29IEPRED0kEqCnjgjKTzWdfgZ3hzF6Gzb08cVmCSrJ7hk_XxTJd47Y2U8pE0oUd90OLuAF6_6l9-J1w6Je2mqt5g7B7-v-R_Mc1hb8TQHZZwyfly7PPQkxpStwpI917syaovT5BuusWlophZlceJ1K3HdoyTW0OPEeF8PeP5HAhZLxMzzKi5aaWW5ee83UKePqia2YnJjTtM7jvP9UvX1J6HjtccdpMiIXNNowbEYa8iGgXfzVAyJ7G2GbjCw4KteI8cLZB5-gO5heHZ7VoVwBfQLOn6eu5yC07fnSqzk1zt0Zaf-U9q9603ClPPKN3h6hXscFWUXWx2gwjwTEV165dwoLAkFDrm4pYVHvdkI0afcLnWPs3iwYk5ZYCl5-4FzRv1_XGVsPHIXfqVxT3RRPuJWY0lWwBSkHGuLZFUWn_LJhISaom6ULDVtiy6q1vzVKi_o0hzBQx5jjvJZgkU6zFZ9eO4jMriCbWkEukgwgC8m31wlQQR1MZ6PlJVQdibJotResFWWA4LimpUI_3S1YssnoSwOn98RERxbSCSky1OdCmu3M2dqFR2_syTOhsr6LwqEM6IK3I6Ovx0Yq9NyXo0gu1-6bVlHICNKK5E_R5SI1-sWH5t3Dr8m_9XWYIrSFYShYbuI5F2I8nn-uP2ilGePEYNuRE960ixFjaW1Iy9GCaws-L5WzNXlnzpl-AW24JqC6yR1rX9dB0VNVw3fIubaQRLwgkTGL4ps_ZjRhvIRS5JKuPcO82HANmtQRdhqoYzBgcQvXsTNwhzFIm1hCt27izXfoM2JTrEScXVAI2mdUnloAKtfoJ816NphTnlnRjqxDl2mgwzYzNHwoHs3TACECw7G8FsqRdIO12jtlziZgNEm0r7hD4c0A5thmEtvzm_vwDV9b1jmDtBPJ7WyEf4goT63S3NAOjg9Ki2RpVZjto50qF2DySFnmwu2LNKvNVplKYL58TueTN2vkdagRWGFCvEwgi5uEv9qiz-x62E327undr7lLfxxqBg9KMVurBAZY3oojO8sCF66hdI_GFw5v1AtdX_NLGcLv4JcqQEEG0k15NEsMoKDzQg-s3OjOEVU2YwI8-ToK8CRkrwp2Xa5Gl_4rl5jOh4VQvwCcgeeTrsynhO0qCMYdFKlZRlGZPEfCePrXMJGfDHfhIyH5hdeCz0yygboQ1JYKAe_15gE1qji8YNGbOo6cluCv36NA9qCFCCBSr_cJLe8fZy0_kqUPb2pb3pc5hgrZ20fm5pZscwPAA7UAFPPipqp8HvsfAALOwNFibml6fa2pnPyLzUxmq-EZqn8fUQQE6i4OH0RfsuZrLMA6n-IMPUnUXV5vWPkkFHshVTJzvNm00D2CmpznojGRETPfSRUzJf7VdHX7JuW6sUom9pTR6s5-3dgnnL4xbSxZvbkKm4WC2uB_57dlawKeEYaf_YSRP8M1PjsumkT8wmxp3Z388ylR20Mm5EAKvEdaDwxGlg8n3i_TK6LFGzniYt1fFzKnOgBH3cp6j9w-S6wOUv1xnjQB3FhykRpJoTFCLOWoKtP8N4g5CyYAPNr_nIXQa8ScYxB7PGdL3QojhPCw" charset="UTF-8"></script></head>
+	<body>
+		<div id="info">
+			Трехмерные фигуры
+		</div>
+
+		<script type="importmap">
+		//Импортируется библиотека с сайта threejs.org 
+			{
+				"imports": {
+					"three": "https://threejs.org/build/three.module.js"
+				}
+			}
+		</script>
+		
+		<script type="module">
+		
+			import * as THREE from 'three';
+			import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js'
+			import { TeapotGeometry } from 'https://threejs.org/examples/jsm/geometries/TeapotGeometry.js';
+
+			var camera, scene, renderer;
+			var controls;
+			var ambientLight, light;
+			init();
+			animate();
+
+			function init() {
+
+				var container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				// CAMERA
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.set( 300, 700, 1200 );
+
+				// LIGHTS
+				ambientLight = new THREE.AmbientLight( 0x333333 );	// 0.2
+
+				light = new THREE.DirectionalLight( 0xFFFFFF, 1.0 );
+				light.position.set( 1, 1, 1 );				
+				// direction is set in GUI
+
+				// RENDERER
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				// EVENTS
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// CONTROLS
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render );
+				controls.rotateSpeed = 0.5; 
+				controls.enableZoom = true;  
+				controls.zoomSpeed = 0.5;  
+
+				controls.minDistance = 500;
+				controls.maxDistance = 2500;
+				
+				controls.enableDamping = true;
+
+				// scene itself
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( "#CDF1FF" );
+
+				scene.add( ambientLight );
+				scene.add( light );
+			
+
+				// Объекты меняем тут
+
+
+					//cube
+					var geometry = new THREE.BoxGeometry( 200, 200, 200 );
+					var material = new THREE.MeshPhongMaterial( { color: "orange" } );
+					var Cube = new THREE.Mesh( geometry, material );
+					Cube.position.set( 400, 0, -400 );
+					Cube.rotation.y = Math.PI / 1;
+					scene.add( Cube );
+
+					//cuboid
+					var geometry = new THREE.BoxGeometry( 200, 100, 100 );
+					var material = new THREE.MeshPhongMaterial( { color: "#FFDD00" } );
+					var Cube = new THREE.Mesh( geometry, material );
+					Cube.position.set( 0, 0, 400 );
+					Cube.rotation.y = Math.PI / 3;
+					scene.add( Cube );
+
+					//prism
+					var radiusTop = 70; var radiusBottom = 70;
+					var heigth = 250; var segments = 3;
+					var geometry = new THREE.CylinderGeometry(
+						radiusTop, radiusBottom, heigth, segments );
+					var material = new THREE.MeshPhongMaterial( { color: "#FF00F4" } );
+					var piramida = new THREE.Mesh( geometry, material );
+					piramida.position.set( -400, 0, 400 );
+					piramida.rotation.y = Math.PI * 2;
+					piramida.rotation.x = Math.PI * 1.5;
+					scene.add( piramida );
+
+					//sphere
+					var geometry = new THREE.SphereGeometry(100, 50, 50);
+					var material = new THREE.MeshPhongMaterial( { color: "red" } );
+					var Sphere1 = new THREE.Mesh( geometry, material );
+					Sphere1.position.set( -400, 0, -400 );
+					Sphere1.rotation.x = Math.PI * 1.5;
+					scene.add( Sphere1 );	
+
+					// hemisphere
+					var geometry = new THREE.SphereGeometry(100, 50, 50, 0, Math.PI); 
+					var material = new THREE.MeshPhongMaterial( { color: "green", side: THREE.DoubleSide } );
+					var Sphere1 = new THREE.Mesh( geometry, material );
+					Sphere1.position.set( 400, 0, 400 );
+					Sphere1.rotation.y = Math.PI * 6;
+					Sphere1.rotation.x = Math.PI * 2.5;
+					scene.add( Sphere1 );
+
+					//cylinder
+					var radiusTop = 128; var radiusBottom = 128;
+					var heigth = 300; var segments = 100;
+					var geometry = new THREE.CylinderGeometry(
+						radiusTop, radiusBottom, heigth, segments );
+					var material = new THREE.MeshPhongMaterial( { color: "blue" } );
+					var piramida = new THREE.Mesh( geometry, material );
+					piramida.position.set( 0, 0, -400 );
+					scene.add( piramida );
+
+					//pyramid
+					var radiusTop = 1; var radiusBottom = 128;
+					var heigth = 300; var segments = 4;
+					var geometry = new THREE.CylinderGeometry(
+						radiusTop, radiusBottom, heigth, segments );
+					var material = new THREE.MeshPhongMaterial( { color: "pink" } );
+					var piramida = new THREE.Mesh( geometry, material );
+					piramida.position.set( -400, 0, 0 );
+					scene.add( piramida );
+
+					//cone
+					var radiusTop = 1; var radiusBottom = 128;
+					var heigth = 300; var segments = 100;
+					var geometry = new THREE.CylinderGeometry(
+						radiusTop, radiusBottom, heigth, segments );
+					var material = new THREE.MeshPhongMaterial( { color: "#986C50" } );
+					var piramida = new THREE.Mesh( geometry, material );
+					piramida.position.set( 400, 0, 0 );
+					scene.add( piramida );
+
+					// чайнюк
+					var geometry = new TeapotGeometry( 100 );
+					var material = new THREE.MeshPhongMaterial( { color: "#72B29E" } );
+					var teapot = new THREE.Mesh( geometry, material );
+					teapot.position.set( 0, 600, 0 );
+					scene.add( teapot );
+					
+					// torus
+					var geometry = new THREE.TorusGeometry( 100, 30, 16, 100 );
+					var material = new THREE.MeshPhongMaterial( { color: "#8506A9" } );
+					const torus = new THREE.Mesh( geometry, material );
+					torus.position.set( 0, 0,  );
+					torus.rotation.y = Math.PI * 6;
+					torus.rotation.x = Math.PI * 2.5;
+					scene.add( torus )					
+
+
+					const helper = new THREE.GridHelper( 1000, 10 );
+					//helper.rotation.x = Math.PI / 2;
+					scene.add( helper );
+
+			}
+
+			// EVENT HANDLERS
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				controls.update(); //
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}			
+
+
+		</script>
+
+	
+</body></html>
